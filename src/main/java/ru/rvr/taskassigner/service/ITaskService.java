@@ -12,8 +12,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.rvr.taskassigner.entity.task.ITask;
 import ru.rvr.taskassigner.entity.task.SimpleTask;
+import ru.rvr.taskassigner.entity.task.TimeBasedTask;
 import ru.rvr.taskassigner.repository.ITaskRepository;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 @GraphQLApi
@@ -38,5 +40,11 @@ public class ITaskService {
         taskRepository.save(new SimpleTask(name,description));
     }
 
+    @GraphQLMutation
+    public void newTimeTask(@GraphQLArgument(name = "name") String name,
+                            @GraphQLArgument(name = "description") String description,
+                            @GraphQLArgument(name = "timestamp")LocalDateTime validUntil) {
+        taskRepository.save(new TimeBasedTask(name,description,validUntil));
+    }
 
 }
